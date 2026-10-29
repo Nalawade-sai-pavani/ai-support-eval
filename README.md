@@ -2,7 +2,7 @@
 
 > A small customer-support assistant that **answers only from verified policies** and **hands over to a human when it isn't sure**, plus a test harness that measures how well it works. 📊
 
-👤 **Author:** _your name here_  📅 **Task:** Week 4, AI Solution Evaluation and Future Enhancement Proposal
+👤 **Author:** Nalawade Sai Pavani 📅 **Task:** Week 4, AI Solution Evaluation and Future Enhancement Proposal
 
 ---
 
