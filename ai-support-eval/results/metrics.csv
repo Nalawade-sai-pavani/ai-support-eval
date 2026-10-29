@@ -1,0 +1,8 @@
+,value
+threshold,0.15
+accuracy_%,70.45
+containment_%,65.91
+wrong_answer_rate_%,15.91
+correct_escalation_%,100.0
+missed_answerable_%,17.14
+p95_latency_ms,0.49

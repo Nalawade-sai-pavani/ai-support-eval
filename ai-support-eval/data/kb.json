@@ -1,0 +1,14 @@
+[
+ {"id": "refund", "text": "Refunds are allowed within 30 days of delivery for unused items in original packaging. The money is returned to the original payment method in 5 to 7 business days."},
+ {"id": "shipping", "text": "Standard shipping takes 3 to 5 business days. Express shipping takes 1 to 2 business days for an extra fee."},
+ {"id": "cancel", "text": "Orders can be cancelled free of charge before they are dispatched. After dispatch you must return the item once it arrives."},
+ {"id": "tracking", "text": "You can track your order using the tracking link sent by email and SMS after dispatch, or under My Orders in the app."},
+ {"id": "payment", "text": "We accept credit cards, debit cards, UPI, net banking and cash on delivery for orders under 5000 rupees."},
+ {"id": "password", "text": "To reset your password choose Forgot Password on the login page and follow the link sent to your registered email."},
+ {"id": "damaged", "text": "If your item arrives damaged, upload a photo within 7 days in My Orders and we will send a free replacement or full refund."},
+ {"id": "warranty", "text": "Electronics carry a 12 month manufacturer warranty. Keep your invoice as proof of purchase for warranty claims."},
+ {"id": "address", "text": "You can change your delivery address before dispatch from My Orders. After dispatch the address cannot be changed."},
+ {"id": "invoice", "text": "Your GST invoice is available under My Orders and is also emailed after delivery."},
+ {"id": "coupon", "text": "Only one coupon code can be used per order and coupons cannot be applied to gift cards or after the order is placed."},
+ {"id": "contact", "text": "Our support team is available by chat and phone from 9 am to 9 pm every day. Chat assistant is available 24 hours."}
+]

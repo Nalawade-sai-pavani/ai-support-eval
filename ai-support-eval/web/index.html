@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support assistant prototype</title>
+<style>
+:root{--bg:#f2f5f8;--panel:#fff;--ink:#14202b;--mute:#5b6b7a;--line:#d5dde5;--blue:#2457d6;--blue-t:#e6edfc;--green:#1e7f5c;--amber:#a86a0d;--amber-t:#fbf0dc;--bot:#eaf0f5;--shadow:0 1px 2px rgba(20,32,43,.06);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161c;--panel:#18212a;--ink:#e8eef4;--mute:#93a3b3;--line:#2b3947;--blue:#7ea2ff;--blue-t:#1d2b4d;--green:#4cc79a;--amber:#e8b058;--amber-t:#3a2d14;--bot:#212d38;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10161c;--panel:#18212a;--ink:#e8eef4;--mute:#93a3b3;--line:#2b3947;--blue:#7ea2ff;--blue-t:#1d2b4d;--green:#4cc79a;--amber:#e8b058;--amber-t:#3a2d14;--bot:#212d38;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 14px 28px}
+h1{font:600 26px/1.15 Georgia,"Times New Roman",serif;margin:4px 0 4px}
+.sub{color:var(--mute);margin:0 0 16px;max-width:60ch}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:860px){.grid{grid-template-columns:1.15fr 1fr;align-items:start}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.chat{display:flex;flex-direction:column;min-height:430px}
+.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto}
+.m{max-width:86%;padding:9px 12px;border-radius:12px;word-wrap:break-word}
+.u{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:3px}
+:root[data-theme="dark"] .u{color:#0b1220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .u{color:#0b1220}}
+.b{align-self:flex-start;background:var(--bot);border-bottom-left-radius:3px}
+.b.esc{background:var(--amber-t);border:1px solid var(--amber)}
+.tag{display:block;font-size:12px;color:var(--mute);margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:5px 11px;font:inherit;font-size:13px;cursor:pointer}
+.chip:hover,.chip:focus-visible{border-color:var(--blue);color:var(--blue);outline:none}
+.in{display:flex;gap:8px;border-top:1px solid var(--line);padding:10px}
+.in input{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.in input:focus{outline:2px solid var(--blue);outline-offset:1px}
+button.go{font:inherit;font-weight:600;border:0;border-radius:8px;padding:0 16px;background:var(--blue);color:#fff;cursor:pointer}
+:root[data-theme="dark"] button.go{color:#0b1220}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.go{color:#0b1220}}
+.side{padding:16px;display:flex;flex-direction:column;gap:18px}
+h2{font:600 16px/1.2 Georgia,serif;margin:0 0 8px}
+.meter{position:relative;height:16px;background:var(--bot);border-radius:8px;overflow:visible}
+.fill{height:100%;border-radius:8px;width:0;background:var(--green);transition:width .35s}
+.fill.low{background:var(--amber)}
+.mark{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--ink);transition:left .15s}
+.scale{display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-top:4px}
+.verdict{margin:8px 0 0;font-weight:600}
+.row{display:flex;align-items:center;gap:8px;font-size:13px;margin:5px 0}
+.row .n{width:112px;flex:none}
+.row .bar{flex:1;height:8px;background:var(--bot);border-radius:4px}
+.row .bar i{display:block;height:100%;background:var(--blue);border-radius:4px}
+.row .v{width:38px;text-align:right;font-variant-numeric:tabular-nums;color:var(--mute)}
+.row.top .n{font-weight:600}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.hint{font-size:13px;color:var(--mute);margin:4px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.stats div{background:var(--bot);border-radius:8px;padding:8px 4px}
+.stats b{display:block;font-size:19px;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--mute)}
+.eval{font:inherit;font-weight:600;background:transparent;color:var(--blue);border:1px solid var(--blue);border-radius:8px;padding:8px 12px;cursor:pointer}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:10px}
+td,th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:12.5px;color:var(--mute);margin-top:16px}
+@media (prefers-reduced-motion:reduce){.fill,.mark{transition:none}}
+</style></head>
+<body><div class="wrap">
+<h1>Support assistant prototype</h1>
+<p class="sub">Ask a shop-support question. The assistant answers only from 12 verified policies, and hands the chat to a human when it isn’t confident. The panel shows how each decision was made.</p>
+<div class="grid">
+ <section class="card chat" aria-label="Chat">
+  <div class="msgs" id="msgs" aria-live="polite"><div class="m b">Hi, I’m the support assistant. Ask about refunds, shipping, payments, passwords and more.</div></div>
+  <div class="chips" id="chips"></div>
+  <div class="in"><input id="q" placeholder="Type a question" autocomplete="off" aria-label="Your question"><button class="go" id="send">Send</button></div>
+ </section>
+ <aside class="card side" aria-label="How it decided">
+  <div><h2>Confidence in the best match</h2>
+   <div class="meter"><div class="fill" id="fill"></div><div class="mark" id="mark"></div></div>
+   <div class="scale"><span>0</span><span>match score</span><span>1.0</span></div>
+   <p class="verdict" id="verdict">Ask a question to see the decision.</p>
+   <div id="top"></div></div>
+  <div><h2>Escalation threshold: <span id="thv">0.15</span></h2>
+   <input type="range" id="th" min="0" max="0.5" step="0.01" value="0.15" aria-label="Escalation threshold">
+   <p class="hint">Below this score the chat goes to a human. Higher is safer but more chats leave the bot.</p></div>
+  <div><h2>This session</h2>
+   <div class="stats"><div><b id="s1">0</b><span>asked</span></div><div><b id="s2">0</b><span>answered</span></div><div><b id="s3">0</b><span>to human</span></div><div><b id="s4">–</b><span>ms avg</span></div></div></div>
+  <div><h2>Test set</h2>
+   <button class="eval" id="ev">Run 44 test questions</button>
+   <div id="evout"></div></div>
+ </aside>
+</div>
+<p class="note">Illustrative prototype from the “AI Solution Evaluation and Future Enhancement Proposal” report. Retrieval uses TF-IDF matching in the browser; the 44-question test set is small and hand-written, so results show the method, not production performance.</p>
+</div>
+<script>
+const KB=[
+["refund","Refunds","Refunds are allowed within 30 days of delivery for unused items in original packaging. The money is returned to the original payment method in 5 to 7 business days."],
+["shipping","Shipping","Standard shipping takes 3 to 5 business days. Express shipping takes 1 to 2 business days for an extra fee."],
+["cancel","Cancellation","Orders can be cancelled free of charge before they are dispatched. After dispatch you must return the item once it arrives."],
+["tracking","Tracking","You can track your order using the tracking link sent by email and SMS after dispatch, or under My Orders in the app."],
+["payment","Payments","We accept credit cards, debit cards, UPI, net banking and cash on delivery for orders under 5000 rupees."],
+["password","Password reset","To reset your password choose Forgot Password on the login page and follow the link sent to your registered email."],
+["damaged","Damaged items","If your item arrives damaged, upload a photo within 7 days in My Orders and we will send a free replacement or full refund."],
+["warranty","Warranty","Electronics carry a 12 month manufacturer warranty. Keep your invoice as proof of purchase for warranty claims."],
+["address","Change address","You can change your delivery address before dispatch from My Orders. After dispatch the address cannot be changed."],
+["invoice","Invoice","Your GST invoice is available under My Orders and is also emailed after delivery."],
+["coupon","Coupons","Only one coupon code can be used per order and coupons cannot be applied to gift cards or after the order is placed."],
+["contact","Contact hours","Our support team is available by chat and phone from 9 am to 9 pm every day. Chat assistant is available 24 hours."]
+];
+const GOLD=`How long do I have to return an item?|refund
+Can I get my money back for something I bought?|refund
+How many days for a refund after delivery?|refund
+When will I receive the refund on my card?|refund
+Is the item refundable if it is unused?|refund
+How many days does standard delivery take?|shipping
+when will my parcel arrive|shipping
+Do you offer express delivery?|shipping
+How fast is shipping?|shipping
+Can I cancel my order?|cancel
+I want to cancel before it ships|cancel
+Is there a fee to cancel an order?|cancel
+Where is my order?|tracking
+How do I track my package?|tracking
+I did not get a tracking link|tracking
+Which payment methods do you accept?|payment
+Can I pay with UPI?|payment
+Is cash on delivery available?|payment
+I forgot my password|password
+How do I reset my login password?|password
+Cannot sign in to my account need password reset|password
+My product arrived broken|damaged
+The item is damaged what should I do?|damaged
+How do I send a photo of a damaged product?|damaged
+How long is the warranty on electronics?|warranty
+Do I need the invoice for a warranty claim?|warranty
+Is my laptop covered under warranty?|warranty
+Can I change my delivery address?|address
+I entered the wrong address how to fix it|address
+Where can I download my GST invoice?|invoice
+I need a bill for my purchase|invoice
+Can I use two coupons together?|coupon
+Does the coupon work on gift cards?|coupon
+What are your support hours?|contact
+Is there a phone number to talk to someone?|contact
+Tell me a joke|none
+What is the weather in Tirupati today?|none
+Who won the cricket match yesterday?|none
+Write a poem about the sea|none
+What is the capital of France?|none
+Can you recommend a good movie?|none
+Explain quantum physics|none
+Is your CEO married?|none
+How do I invest in shares?|none`.split("\n").map(l=>l.split("|"));
+const STOP=new Set("a about after all also am an and any are as at be been before but by can could did do does for from had has have how i if in into is it its me my of on or our out so than that the their them then there these they this to up us was we were what when where which who why will with would you your".split(" "));
+function toks(t){const w=(t.toLowerCase().match(/[a-z0-9]{2,}/g)||[]).filter(x=>!STOP.has(x));const g=[...w];for(let i=0;i<w.length-1;i++)g.push(w[i]+" "+w[i+1]);return g}
+const docs=KB.map(k=>toks(k[2]));const vocab={};docs.forEach(d=>new Set(d).forEach(t=>vocab[t]=(vocab[t]||0)+1));
+const N=docs.length;const idf={};for(const t in vocab)idf[t]=Math.log((1+N)/(1+vocab[t]))+1;
+function vec(ts){const v={};ts.forEach(t=>{if(idf[t])v[t]=(v[t]||0)+1});let n=0;for(const t in v){v[t]*=idf[t];n+=v[t]*v[t]}n=Math.sqrt(n)||1;for(const t in v)v[t]/=n;return v}
+const dv=docs.map(vec);
+function rank(q){const v=vec(toks(q));return dv.map((d,i)=>{let s=0;for(const t in v)if(d[t])s+=v[t]*d[t];return{i,s}}).sort((a,b)=>b.s-a.s)}
+function answer(q,th){const t0=performance.now();const r=rank(q);const top=r[0];const esc=top.s<th;return{id:esc?"none":KB[top.i][0],top:r.slice(0,3),conf:top.s,esc,ms:performance.now()-t0}}
+function evaluate(th){let ok=0,cont=0,wrong=0,oos=0,oosEsc=0;GOLD.forEach(([q,e])=>{const a=answer(q,th);if(a.id===e)ok++;if(!a.esc)cont++;if(!a.esc&&a.id!==e)wrong++;if(e==="none"){oos++;if(a.esc)oosEsc++}});const n=GOLD.length;return{n,acc:ok/n*100,cont:cont/n*100,wrong:wrong/n*100,oos:oosEsc/oos*100}}
+
+const $=id=>document.getElementById(id);
+let th=0.15,asked=0,ans=0,esc=0,ms=0;
+["I forgot my password","How do I track my package?","Can I pay with UPI","Tell me a joke","how long for refund"].forEach(t=>{const b=document.createElement("button");b.className="chip";b.textContent=t;b.onclick=()=>ask(t);$("chips").appendChild(b)});
+function add(cls,txt,tag){const d=document.createElement("div");d.className="m "+cls;d.textContent=txt;if(tag){const s=document.createElement("span");s.className="tag";s.textContent=tag;d.appendChild(s)}$("msgs").appendChild(d);$("msgs").scrollTop=1e5}
+function show(a){
+ $("fill").style.width=Math.min(a.conf,1)*100+"%";$("fill").className="fill"+(a.esc?" low":"");
+ $("mark").style.left=th*100+"%";
+ $("verdict").textContent=a.esc?"Score "+a.conf.toFixed(2)+" is below "+th.toFixed(2)+": handed to a human.":"Score "+a.conf.toFixed(2)+" meets "+th.toFixed(2)+": answered from “"+KB[a.top[0].i][1]+"”.";
+ $("top").innerHTML=a.top.map((r,k)=>'<div class="row'+(k?"":" top")+'"><span class="n">'+KB[r.i][1]+'</span><span class="bar"><i style="width:'+Math.min(r.s,1)*100+'%"></i></span><span class="v">'+r.s.toFixed(2)+'</span></div>').join("");
+}
+function ask(q){q=q.trim();if(!q)return;add("u",q);const a=answer(q,th);asked++;ms+=a.ms;
+ if(a.esc){esc++;add("b esc","Let me connect you to a human agent.","Confidence "+a.conf.toFixed(2)+", below threshold")}
+ else{ans++;add("b",KB[a.top[0].i][2],"From “"+KB[a.top[0].i][1]+"”, confidence "+a.conf.toFixed(2))}
+ show(a);$("s1").textContent=asked;$("s2").textContent=ans;$("s3").textContent=esc;$("s4").textContent=(ms/asked).toFixed(2);$("q").value=""}
+$("send").onclick=()=>ask($("q").value);
+$("q").addEventListener("keydown",e=>{if(e.key==="Enter")ask($("q").value)});
+$("th").oninput=e=>{th=+e.target.value;$("thv").textContent=th.toFixed(2);$("mark").style.left=th*100+"%"};
+$("mark").style.left="15%";
+$("ev").onclick=()=>{const r=evaluate(th);$("evout").innerHTML='<table><tr><th>At threshold '+th.toFixed(2)+'</th><th>Result</th></tr><tr><td>Answer accuracy</td><td>'+r.acc.toFixed(1)+'%</td></tr><tr><td>Containment (no human needed)</td><td>'+r.cont.toFixed(1)+'%</td></tr><tr><td>Confident but wrong</td><td>'+r.wrong.toFixed(1)+'%</td></tr><tr><td>Off-topic questions escalated</td><td>'+r.oos.toFixed(0)+'%</td></tr></table>'};
+</script></body></html>

@@ -1,0 +1,45 @@
+question,expected_id
+How long do I have to return an item?,refund
+Can I get my money back for something I bought?,refund
+How many days for a refund after delivery?,refund
+When will I receive the refund on my card?,refund
+Is the item refundable if it is unused?,refund
+How many days does standard delivery take?,shipping
+when will my parcel arrive,shipping
+Do you offer express delivery?,shipping
+How fast is shipping?,shipping
+Can I cancel my order?,cancel
+I want to cancel before it ships,cancel
+Is there a fee to cancel an order?,cancel
+Where is my order?,tracking
+How do I track my package?,tracking
+I did not get a tracking link,tracking
+Which payment methods do you accept?,payment
+Can I pay with UPI?,payment
+Is cash on delivery available?,payment
+I forgot my password,password
+How do I reset my login password?,password
+Cannot sign in to my account need password reset,password
+My product arrived broken,damaged
+The item is damaged what should I do?,damaged
+How do I send a photo of a damaged product?,damaged
+How long is the warranty on electronics?,warranty
+Do I need the invoice for a warranty claim?,warranty
+Is my laptop covered under warranty?,warranty
+Can I change my delivery address?,address
+I entered the wrong address how to fix it,address
+Where can I download my GST invoice?,invoice
+I need a bill for my purchase,invoice
+Can I use two coupons together?,coupon
+Does the coupon work on gift cards?,coupon
+What are your support hours?,contact
+Is there a phone number to talk to someone?,contact
+Tell me a joke,none
+What is the weather in Tirupati today?,none
+Who won the cricket match yesterday?,none
+Write a poem about the sea,none
+What is the capital of France?,none
+Can you recommend a good movie?,none
+Explain quantum physics,none
+Is your CEO married?,none
+How do I invest in shares?,none
